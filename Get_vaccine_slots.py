@@ -32,7 +32,7 @@ def get_centers_by_district(district):
 
 	elif resp.status_code != 200:
 
-		return f"Error code : {resp.status_code}, Response : {resp.reason}"
+		return resp.status_code
 
 
 def check_min18_sessions(sessions):
@@ -104,6 +104,12 @@ if __name__ == "__main__":
 	while True:
 		
 		centers = get_centers_by_district(district)
+		
+		if centers != 200:
+			
+			print(f"Unable to fetch data")
+			
+			break
 
 		available_sessions = []
 
@@ -119,10 +125,8 @@ if __name__ == "__main__":
 
 			available_sessions_df = pd.DataFrame(available_sessions,columns=["Center","Address","District","Timing","Vaccine fees","Session (Date, Vaccine, Avl. Dose 1, Avl. Dose 2)"])
 
-			if available_sessions_df.shape[0] > 0:
+			print(f"{strftime("%Y/%m/%d %I:%M:%S %p")} Slot Available!")
 
-				print(f"{strftime("%Y/%m/%d %I:%M:%S %p")} Slot Available!")
-
-				send_alert("email address", available_sessions_df.to_html()) # Enter your email id
+			send_alert("email address", available_sessions_df.to_html()) # Enter your email id
 
 		sleep(300)
