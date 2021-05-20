@@ -101,11 +101,9 @@ if __name__ == "__main__":
 
 	# for other districts in Maharashtra check the link "https://cdn-api.co-vin.in/api/v2/admin/location/districts/21"
 
-	centers = get_centers_by_district(district)
-
-	# centers = centers[["name","address","district_name","vaccine_fees","sessions"]]
-
 	while True:
+		
+		centers = get_centers_by_district(district)
 
 		available_sessions = []
 
@@ -121,10 +119,10 @@ if __name__ == "__main__":
 
 			available_sessions_df = pd.DataFrame(available_sessions,columns=["Center","Address","District","Timing","Vaccine fees","Session (Date, Vaccine, Avl. Dose 1, Avl. Dose 2)"])
 
-		if available_sessions_df.shape[0] > 0:
+			if available_sessions_df.shape[0] > 0:
 
-			print("Slot Available")
+				print("Slot Available")
 
-			send_alert("nimishfootyfanatic@gmail.com", available_sessions_df.to_html())
+				send_alert("nimishfootyfanatic@gmail.com", available_sessions_df.to_html())
 
 		sleep(300)
