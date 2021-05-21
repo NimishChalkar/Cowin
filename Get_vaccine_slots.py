@@ -121,7 +121,7 @@ if __name__ == "__main__":
 
                 print(strftime("%Y/%m/%d %I:%M:%S %p"),"Slot Available!")
 
-                send_alert(["nimishfootyfanatic@gmail.com", available_sessions_df.to_html()) # Enter your email id
+                send_alert(["abc@gmail.com", available_sessions_df.to_html()) # Enter your email id
 
             elif not available_sessions:
 
