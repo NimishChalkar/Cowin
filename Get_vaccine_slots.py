@@ -20,7 +20,7 @@ def get_centers_by_district(district):
 
     url = f"https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id={district}&date={date}"
 
-    headers={'User-Agent': 'Mozilla/5.0'} # for the server to identify the request is coming a browser
+    headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36", "content-type":"application/json; charset=utf-8"} # for the server to identify the request is coming a browser
 
     s = requests.Session()
 
@@ -30,9 +30,7 @@ def get_centers_by_district(district):
 
         return resp.json()["centers"]
 
-    elif resp.status_code != 200:
-
-        return [resp.status_code,f"{resp.status_code} {resp.reason}"]
+    return False
 
 
 def check_min18_sessions(sessions):
@@ -104,15 +102,9 @@ if __name__ == "__main__":
     while True:
         
         centers = get_centers_by_district(district)
+
+        if centers != []:
         
-        if centers[0] != 200:
-            
-            print(strftime("%Y/%m/%d %I:%M:%S %p"),f"Unable to fetch data : {centers[1]}")
-            
-            pass
-
-        else:
-
             available_sessions = []
 
             for center in centers:
@@ -122,13 +114,21 @@ if __name__ == "__main__":
                 if available_slots != []:
 
                     available_sessions.append([center["name"],center["address"],center["district_name"],"-".join([center["from"],center["to"]]),center["vaccine_fees"],available_slots])
-            
+                
             if available_sessions != []:
 
                 available_sessions_df = pd.DataFrame(available_sessions,columns=["Center","Address","District","Timing","Vaccine fees","Session (Date, Vaccine, Avl. Dose 1, Avl. Dose 2)"])
 
-                print("".join([strftime("%Y/%m/%d %I:%M:%S %p"),"Slot Available!"]))
+                print(strftime("%Y/%m/%d %I:%M:%S %p"),"Slot Available!")
 
-                send_alert("email address", available_sessions_df.to_html()) # Enter your email id
+                send_alert(["nimishfootyfanatic@gmail.com", available_sessions_df.to_html()) # Enter your email id
 
-        sleep(300)
+            elif not available_sessions:
+
+                print(strftime("%d-%m-%Y %I:%M:%S %p"),"No slot available for 18+")
+
+        elif centers == False:
+
+            print(strftime("%d-%m-%Y %I:%M:%S %p"),"Bad Reponse")
+
+        sleep(180)
