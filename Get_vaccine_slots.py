@@ -18,19 +18,23 @@ def get_centers_by_district(district):
 
     date = strftime("%d-%m-%Y")
 
-    url = f"https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id={district}&date={date}"
-
     headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36", "content-type":"application/json; charset=utf-8"} # for the server to identify the request is coming a browser
 
     s = requests.Session()
 
-    resp = s.get(url, headers=headers)
+    slots = []
 
-    if resp.status_code == 200:
+    for dist in district:
 
-        return resp.json()["centers"]
+        url = f"https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id={dist}&date={date}"
 
-    return False
+        resp = s.get(url, headers=headers)
+
+        if resp.status_code == 200:
+
+            slots.extend(resp.json()["centers"])
+
+    return slots
 
 
 def check_min18_sessions(sessions):
@@ -95,13 +99,13 @@ def send_alert(to_addrs, data):
 
 if __name__ == "__main__":
 
-    district = 395 # Mumbai
+    district_id = [395,392] # Mumbai,Thane
 
     # for other districts in Maharashtra check the link "https://cdn-api.co-vin.in/api/v2/admin/location/districts/21"
 
     while True:
         
-        centers = get_centers_by_district(district)
+        centers = get_centers_by_district(district_id)
 
         if centers != []:
         
