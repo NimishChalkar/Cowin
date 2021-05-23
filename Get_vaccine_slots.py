@@ -79,9 +79,7 @@ def send_alert(to_addrs, data):
     
     msg.attach(part2)
 
-    s = SMTP("smtp.gmail.com")
-
-    s.connect(host="smtp.gmail.com", port=587)
+    s = SMTP(host="smtp.gmail.com", port=587)
 
     s.ehlo()
 
