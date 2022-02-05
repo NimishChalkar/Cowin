@@ -14,7 +14,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 
-def get_centers_by_district(district):
+def get_centers_by_district(district: list):
 
     date = strftime("%d-%m-%Y")
 
@@ -37,7 +37,7 @@ def get_centers_by_district(district):
     return slots
 
 
-def check_min18_sessions(sessions):
+def check_min18_sessions(sessions: dict):
 
     min18_sessions = []
 
@@ -50,7 +50,7 @@ def check_min18_sessions(sessions):
     return min18_sessions
 
 
-def send_alert(to_addrs, data):
+def send_alert(to_addrs: str, data):
 
     from_addrs = "smtpbot25@gmail.com"
 
