@@ -52,7 +52,7 @@ def check_min18_sessions(sessions: dict):
 
 def send_alert(to_addrs: str, data):
 
-    from_addrs = "smtpbot25@gmail.com"
+    from_addrs = "**Your secondary email address**"
 
     msg = MIMEMultipart("multipart")
 
@@ -87,7 +87,7 @@ def send_alert(to_addrs: str, data):
     
     s.ehlo()
 
-    s.login(from_addrs,"Password@2022")
+    s.login(from_addrs,"**Your Password**")
 
     s.sendmail(from_addrs, to_addrs, msg.as_string())
 
